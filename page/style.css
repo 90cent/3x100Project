@@ -1,0 +1,184 @@
+body {
+    margin: 0;
+    border: none;
+    background-image: url(assets/bg.gif);
+    background-size: 100% 100%;
+
+    font-family: DOTMATRIX;
+
+    display: flex;
+
+    align-content: center;
+    justify-content: center;
+}
+
+@font-face {
+    font-family: DOTMATRIX;
+    src: url(assets/fonts/DOTMATRI.TTF);
+}
+
+@keyframes fade {
+    0%,100% {
+        background-position: 0 0;
+    }
+
+    50% {
+        background-position: 100% 0;
+    }
+}
+
+
+.chatcontainer {
+    width: 90%;
+    height: 25%;
+
+    margin-top: 30px;
+    margin-bottom: 30px;
+
+    overflow: scroll;
+    overflow-x: hidden;
+
+    border: double;
+    background-color: rgba(75, 108, 255, 0.534);
+
+    transition: height 400ms ease-in-out;
+}
+
+.chatcontainer:hover {
+    height: 90%;
+}
+
+.chatcontainer .boxes {
+    list-style: none;
+    list-style-type: none;
+
+    display: grid;
+    position: relative;
+    
+    justify-content: center;
+    align-content: center;
+
+    margin: 2%;
+    padding: 4px;
+
+    grid-template-columns: repeat(auto-fill,230px);
+    grid-auto-rows: 220px;
+}
+
+.chatcontainer .chatinput {
+    width: 100%;
+    height: 40px;
+
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+.chatcontainer .chatinput input {
+    width: 80%;
+    height: 100%;
+
+    border: none;
+    outline: none;
+
+    font-family: DOTMATRIX;
+    font-size: large;
+
+    text-align: center;
+
+    background-color: rgba(46, 45, 45, 0.900);
+    transition: background-color 250ms ease-in;
+}
+
+.chatcontainer .chatinput input:focus {
+    animation: typing 1s steps(40,end) forwards;
+    background-color: rgba(46, 45, 45, 0.300);
+}
+
+.chatcontainer li {
+    margin: 1% 1% 1% 1%;
+    padding: 1% 1% 1% 1%;
+}
+
+.chatcontainer li div {
+    width: 210px;
+    height: 140px;
+
+
+    background-color: crimson;
+    grid-row-end: 0;
+}
+
+.chatcontainer li div .infobar {
+    width: 100%;
+    height: 30%;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill,100%);
+    grid-auto-rows: 10px;
+
+    justify-content: center;
+
+    background-color: coral;
+}
+
+.chatcontainer li div .infobar #id {
+    position: relative;
+    margin: 5px 6px 6px 0px;
+
+    justify-self: right;
+
+    grid-row-end: 1;
+}
+
+.chatcontainer li div .infobar #status {
+    position: relative;
+    margin: 0% 0% 0% 0%;
+    padding: 0% 0% 0% 0%;
+
+    justify-self: center;
+
+    grid-row-end: 0;
+}
+
+.chatcontainer li div .infobar #sign-button {
+    width: 60px;
+    height: 20px;
+
+    display: flex;
+    position: absolute; 
+
+    align-self: baseline;
+    justify-content: center;
+    
+    margin: 2px;
+
+    outline: none;
+
+    background-size: 400% 400%;
+    background-image: linear-gradient(60deg,gold,orange);
+
+    font-family: DOTMATRIX;
+
+    animation: fade 2s linear infinite;
+    transition: all 200ms ease;
+}
+
+.chatcontainer li div .infobar #sign-button:hover {
+    transform: scaleX(200%) scaleY(150%);
+
+    background-size: 400% 400%;
+    background-image: linear-gradient(60deg,orange,gold);
+
+    animation: fade 500ms linear infinite;
+}
+
+.chatcontainer li div #content {
+    text-align: left;
+    text-anchor: middle;    
+
+    font-size: medium;
+
+    margin-top: 8px;
+    padding-left: 10px;
+}
