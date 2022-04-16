@@ -6,7 +6,7 @@ use std::collections::hash_map::DefaultHasher;
 
 
 use rand::{thread_rng, Rng};
-use log::*;
+use log;
 
     #[derive(Debug)]
     #[derive(Clone)]
@@ -28,7 +28,7 @@ use log::*;
 
     impl MessageBox {
         pub fn new(_content: String,_id: u32) -> MessageBox {
-            info!("Creating new MessageBox");
+            log::info!("Creating new MessageBox");
 
 
             MessageBox {
@@ -57,7 +57,41 @@ use log::*;
 
 
 pub mod chatverse {
+    use std::{sync::Mutex,sync::mpsc};
+    use log;
+
     pub fn init(_message_box: super::messageboxtemplate::MessageBox) {
+        //let (tx,rx) = mpsc::channel();
+
+        std::thread::spawn(move || {
+            loop {
+                let t_handle = std::thread::spawn(move || {
+                    //let message_box = &_message_box;
         
+                    
+                }).join().expect("Failed to start thread"); 
+            }   
+        });
+
+       
+        todo!()
     }
+
+    enum ThreadLogLevel {
+        LOG = 0,
+        WARNING = 1,
+        ERROR = 2
+    }
+
+    ///Only use this in the chatverse
+    fn t_log(message: String,log_level: ThreadLogLevel) {
+        match log_level {
+            ThreadLogLevel::LOG => log::info!("[MESSAGEBOX METAVERSE] {}",message),
+            ThreadLogLevel::WARNING => log::warn!("[MESSAGEBOX METAVERSE] {}",message),
+            ThreadLogLevel::ERROR => log::error!("[MESSAGEBOX METAVERSE] {}",message),
+        };
+    }
+
+
+    // t_ means thread bruh
 }

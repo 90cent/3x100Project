@@ -128,11 +128,11 @@ pub mod security {
             pub lifetime: Instant,
         }
 
-        pub fn totp_process(wait_time_sec: i32) -> _TOTP{
+       /* pub fn totp_process(wait_time_sec: i32) -> _TOTP{
             let time = time::Instant::now();
             let mut code: Vec<i32> = Vec::new();
 
-            while time.elapsed().as_secs() <= wait_time_sec.try_into().unwrap() {}
+            while time.elapsed().as_secs() < wait_time_sec.try_into().unwrap() {}
             for i in 0..5 {
                 code.push(rand::thread_rng().gen_range(0..9));
             }
@@ -145,7 +145,7 @@ pub mod security {
             }
 
             _TOTP {lifetime: time::Instant::now(), value: code_i32}
-        }
+        }*/
     }
 
     pub struct Auth {

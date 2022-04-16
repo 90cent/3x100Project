@@ -21,18 +21,34 @@
 <script>
     var input = document.getElementById("inputbox");
 
-    input.addEventListener("keypress",(event) => {
-        if(event.keyCode === 13) {
+    input.addEventListener("keypress", (event) => {
+        if (event.keyCode === 13) {
             event.preventDefault();
             console.log("Sending input...");
 
             let text = input.value;
+            input.setAttribute("disabled","");
             input.value = "Message is going to be sent";
 
 
 
             let request = new XMLHttpRequest();
+            request.onreadystatechange = () => {
+                if (this.readyState == 4 && this.status == 200) {
+                    // Typical action to be performed when the document is ready:
+                    console.log(request.responseText);
+                }
+            }
+
+            request.open("POST",location.href+"chat",true);
+            request.setRequestHeader("Content-Type","application/json");
             
+            input.value = "Prepared data";
+            request.send(JSON.stringify({"content": text}));
+            
+            setTimeout(() => {
+                input.value = "";
+            },2000);
 
             //send to backend
         }

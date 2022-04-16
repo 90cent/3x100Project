@@ -1,8 +1,8 @@
 [package]
-name = "board3x100"
-version = "0.1.5"
+name = "project3x100"
+version = "0.1.6"
 edition = "2021"
-author = ["gegake"]
+author = "gegake"
 
 
 [dependencies]
@@ -13,7 +13,7 @@ serde = { version = "1", features = ["derive"] }
 
 chrono = "*"
 colored = {git = "https://github.com/mackwic/colored"}
-log = "*"
+log = "0.4.11"
 
 include_dir = "0.7.2"
 

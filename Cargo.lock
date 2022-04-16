@@ -197,21 +197,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "board3x100"
-version = "0.1.5"
-dependencies = [
- "chrono",
- "colored",
- "include_dir",
- "log 0.4.16",
- "rand",
- "rocket 0.4.10",
- "rocket-basicauth",
- "rocket_contrib",
- "serde",
-]
-
-[[package]]
 name = "bumpalo"
 version = "3.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1403,6 +1388,21 @@ dependencies = [
  "syn 1.0.89",
  "version_check 0.9.4",
  "yansi",
+]
+
+[[package]]
+name = "project3x100"
+version = "0.1.6"
+dependencies = [
+ "chrono",
+ "colored",
+ "include_dir",
+ "log 0.4.16",
+ "rand",
+ "rocket 0.4.10",
+ "rocket-basicauth",
+ "rocket_contrib",
+ "serde",
 ]
 
 [[package]]
