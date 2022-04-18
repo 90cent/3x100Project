@@ -1,7 +1,7 @@
 /target
 /boxes
 /.vscode
-!Rocket.toml
+!*.toml
 !Cargo.lock
 !install.sh
 !.DS_Store
