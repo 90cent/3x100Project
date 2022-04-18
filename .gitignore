@@ -1,1 +1,6 @@
 /target
+/boxes
+/.vscode
+!Rocket.toml
+!Cargo.lock
+!install.sh
