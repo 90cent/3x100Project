@@ -1,13 +1,14 @@
 <!-- templates/index.html.hbs -->
-
+<!DOCTYPE html>
 <head>
     <link rel="stylesheet" href="/page/style.css">
 </head>
 
 <body>
+    <title>{{{title}}}</title>
     <div class="chatcontainer">
         <div class="chatinput">
-            <input type="text" name="" id="inputbox" autofocus>
+            <input type="text" name="" placeholder="Enter your text here" id="inputbox">
         </div>
 
         <ul class="boxes">
@@ -15,15 +16,19 @@
         </ul>
     </div>
 
+
+    <img id="logo" src="/page/assets/bg.gif" alt="" width="130px" height="100px">
 </body>
 
 
 <script>
     var input = document.getElementById("inputbox");
 
-    input.addEventListener("keypress", (event) => {
-        if (event.keyCode === 13) {
+    document.addEventListener("keypress", (event) => {
+        if (event.keyCode === 13 && input.value != "") {
             event.preventDefault();
+        
+
             console.log("Sending input...");
 
             let text = input.value;
@@ -34,10 +39,17 @@
 
             let request = new XMLHttpRequest();
             request.onreadystatechange = () => {
-                if (this.readyState == 4 && this.status == 200) {
-                    // Typical action to be performed when the document is ready:
-                    console.log(request.responseText);
+                if (request.responseText === "ok bruh") {
+                    setTimeout(() => {
+                        input.value = "";
+                        input.removeAttribute("disabled");
+                        input.focus();
+                        location.reload();
+                    },1500);
                 }
+
+                console.log(request.responseText);
+                
             }
 
             request.open("POST",location.href+"chat",true);
@@ -45,12 +57,12 @@
             
             input.value = "Prepared data";
             request.send(JSON.stringify({"content": text}));
-            
-            setTimeout(() => {
-                input.value = "";
-            },2000);
 
-            //send to backend
+            input.value = "Input sent waiting for backend...";
+            
+        }
+        else {
+            input.focus();
         }
     })
 </script>

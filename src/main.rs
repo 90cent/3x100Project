@@ -1,5 +1,4 @@
 #![feature(decl_macro)]
-use std::collections::HashMap;
 use std::{fmt::format,thread,process,time};
 use std::sync::mpsc::{self,Receiver,Sender};
 use std::{io,fs,path,hash};
@@ -7,9 +6,6 @@ use std::{io,fs,path,hash};
 #[macro_use] extern crate rocket;
 
 use colored::*;
-
-pub mod utils;
-use utils::{executer,embed};
 
 pub mod site;
 

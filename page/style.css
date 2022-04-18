@@ -1,7 +1,7 @@
 body {
     margin: 0;
     border: none;
-    background-image: url(assets/bg.gif);
+    background-color: black;
     background-size: 100% 100%;
 
     font-family: DOTMATRIX;
@@ -10,6 +10,8 @@ body {
 
     align-content: center;
     justify-content: center;
+
+    z-index: 0;
 }
 
 @font-face {
@@ -27,10 +29,38 @@ body {
     }
 }
 
+#logo {
+    display: flex;
+
+    margin: none;
+    padding: none;
+    
+    align-self: center;
+    justify-self: center;
+
+    position: absolute;
+    
+
+    z-index: 1;
+    animation: logo_animate 3s ease-out infinite;
+}
+
+@keyframes logo_animate {
+    0%,100% {
+        top: 0%;
+        width: 130px;
+    }
+
+
+    50% {
+        top: 90%;
+        width: 300px;
+    }
+}
 
 .chatcontainer {
     width: 90%;
-    height: 25%;
+    height: 0%;
 
     margin-top: 30px;
     margin-bottom: 30px;
@@ -42,6 +72,8 @@ body {
     background-color: rgba(75, 108, 255, 0.534);
 
     transition: height 400ms ease-in-out;
+
+    z-index: 5;
 }
 
 .chatcontainer:hover {
