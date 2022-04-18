@@ -4,3 +4,5 @@
 !Rocket.toml
 !Cargo.lock
 !install.sh
+!.gitignore
+!.DS_Store
