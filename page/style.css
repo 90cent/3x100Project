@@ -1,8 +1,8 @@
 body {
     margin: 0;
     border: none;
-    background-color: black;
-    background-size: 100% 100%;
+    background-image: url("/page/assets/bg2.gif");
+    background-size: 100% 600%;
 
     font-family: DOTMATRIX;
 
@@ -29,32 +29,36 @@ body {
     }
 }
 
-#logo {
-    display: flex;
+.bar {
+    width: 100%;
+    height: 60px;
 
-    margin: none;
-    padding: none;
-    
-    align-self: center;
-    justify-self: center;
+    display: flex;
 
     position: absolute;
     
+    bottom: 0%;
 
-    z-index: 1;
-    animation: logo_animate 3s ease-out infinite;
+    justify-content: center;
+
+    background-color: rgba(12, 1, 1, 0.63);
+    z-index: 10;
+}
+
+.bar img {
+    padding-left: 0%;
+
+    animation: logo_animate 1500ms ease-in-out infinite;
 }
 
 @keyframes logo_animate {
     0%,100% {
-        top: 0%;
-        width: 130px;
+        width: 128px;
     }
-
+    
 
     50% {
-        top: 90%;
-        width: 300px;
+        width:400px;
     }
 }
 
@@ -69,7 +73,7 @@ body {
     overflow-x: hidden;
 
     border: double;
-    background-color: rgba(75, 108, 255, 0.534);
+    background-color: rgba(0, 0, 0, 0.534);
 
     transition: height 400ms ease-in-out;
 
@@ -118,13 +122,15 @@ body {
 
     text-align: center;
 
-    background-color: rgba(46, 45, 45, 0.900);
+    
+
+    background-color: rgba(95, 93, 93, 0.2);
     transition: background-color 250ms ease-in;
 }
 
 .chatcontainer .chatinput input:focus {
     animation: typing 1s steps(40,end) forwards;
-    background-color: rgba(46, 45, 45, 0.300);
+    background-color: rgba(226, 220, 220, 0.822);
 }
 
 .chatcontainer li {
@@ -137,7 +143,7 @@ body {
     height: 140px;
 
 
-    background-color: crimson;
+    background-color: rgba(12, 1, 1, 0.63);
     grid-row-end: 0;
 }
 
@@ -151,7 +157,7 @@ body {
 
     justify-content: center;
 
-    background-color: coral;
+    background-color: greenyellow;
 }
 
 .chatcontainer li div .infobar #id {
@@ -213,4 +219,9 @@ body {
 
     margin-top: 8px;
     padding-left: 10px;
+
+    border-radius: 2px;
+    border-style:dotted;
+    border-color: greenyellow;
+    color: greenyellow;
 }
