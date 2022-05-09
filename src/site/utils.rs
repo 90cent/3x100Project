@@ -62,44 +62,31 @@ use serde_json;
     }
 }
 
+pub mod database {
+    use std::error::Error;
+    
 
+    use mongodb;
 
-pub mod chatverse {
-    use std::{sync::Mutex,sync::mpsc};
-    use log;
-
-    pub fn init(_message_box: super::messageboxtemplate::MessageBox) {
-        //let (tx,rx) = mpsc::channel();
-
-        std::thread::spawn(move || {
-            loop {
-                let t_handle = std::thread::spawn(move || {
-                    //let message_box = &_message_box;
-        
-                    
-                }).join().expect("Failed to start thread"); 
-            }   
-        });
-
-       
-        todo!()
+    pub enum Actions {
+        GetBoxes = 0,
+        InsertBox = 1,
+        InitDatabaseTime = 2
     }
 
-    enum ThreadLogLevel {
-        LOG = 0,
-        WARNING = 1,
-        ERROR = 2
-    }
-
-    ///Only use this in the chatverse
-    fn t_log(message: String,log_level: ThreadLogLevel) {
-        match log_level {
-            ThreadLogLevel::LOG => log::info!("[MESSAGEBOX METAVERSE] {}",message),
-            ThreadLogLevel::WARNING => log::warn!("[MESSAGEBOX METAVERSE] {}",message),
-            ThreadLogLevel::ERROR => log::error!("[MESSAGEBOX METAVERSE] {}",message),
+    pub fn action(database_action_code: i32) {
+        let mut client_options = mongodb::options::ClientOptions::parse("mongodb://localhost:27017");
+        let client = match mongodb::Client::with_options(client_options) {
+            Ok(k) => Some(k),
+            Err(e) => None,
         };
+
+        if client.is_some() {
+            
+        }
     }
 
 
-    // t_ means thread bruh
+
+
 }

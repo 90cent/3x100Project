@@ -1,16 +1,18 @@
 [package]
 name = "project3x100"
-version = "0.1.7"
+version = "0.1.8"
 edition = "2021"
-authors = ["GEGAKE","Nxzgul"]
+authors = ["GEGAKE"]
 
 
 [dependencies]
 rocket = "0.4.10"
 rocket_contrib = {version = "0.4.10", features = ["handlebars_templates"]}
 
+tokio = {version = "*", features = ["full"]}
 serde = { version = "1", features = ["derive"] }
 serde_json = "*"
+mongodb = "*"
 
 chrono = "*"
 colored = {git = "https://github.com/mackwic/colored"}
