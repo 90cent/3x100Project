@@ -64,26 +64,35 @@ use serde_json;
 
 pub mod database {
     use std::error::Error;
-    
-
+    use tokio::{runtime,task};
     use mongodb;
 
     pub enum Actions {
-        GetBoxes = 0,
-        InsertBox = 1,
-        InitDatabaseTime = 2
+        GetBoxes,
+        InsertBox,
+        InitDatabaseTime
     }
 
-    pub fn action(database_action_code: i32) {
-        let mut client_options = mongodb::options::ClientOptions::parse("mongodb://localhost:27017");
-        let client = match mongodb::Client::with_options(client_options) {
-            Ok(k) => Some(k),
-            Err(e) => None,
-        };
+    pub fn action(database_action_code: Actions) {
+        let rt = runtime::Builder::new_current_thread()
+            .enable_io()
+            .enable_time()
+            .on_thread_start(|| {println!("Created Runtime")})
+            .thread_name("Runtime #1")
+            .build().expect("Runtime build failed");
 
-        if client.is_some() {
-            
-        }
+        rt.spawn_blocking(async move || {
+            let mut client_options = mongodb::options::ClientOptions::parse("mongodb://192.168.178.135:27017").await.unwrap();
+            client_options.app_name = Some("project3x100".into());
+
+            let client = mongodb::Client::with_options(client_options).expect("Failed");
+
+            let c = client;
+                let databases = c.list_database_names(None, None);
+
+                println!("{:#?}",databases.await.unwrap());
+        });
+        
     }
 
 

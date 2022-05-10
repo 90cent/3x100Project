@@ -1,4 +1,4 @@
-use super::utils::messageboxtemplate;
+use super::utils::{messageboxtemplate,database};
 use crate::site::Template;
 
 use std::io::Result;
@@ -48,6 +48,8 @@ pub fn index() -> Template {
 
     let context = TestContext {boxes: html_message_boxes.join().expect("not gud"),title: _title.into()};
     
+    database::action(database::Actions::GetBoxes);
+
     Template::render("index", &context)
 }
 

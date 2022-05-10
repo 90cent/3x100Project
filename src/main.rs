@@ -1,4 +1,5 @@
 #![feature(decl_macro)]
+#![feature(async_closure)]
 use std::{fmt::format,thread,process,time};
 use std::sync::mpsc::{self,Receiver,Sender};
 use std::{io,fs,path,hash};
@@ -20,6 +21,7 @@ fn main() {
     println!("{:#?}",weh);
     println!("HTML: {}",weh.to_html());
 
+    
 
     thread::sleep(time::Duration::from_secs(3));
     site::launch();    
