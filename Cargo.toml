@@ -17,6 +17,7 @@ mongodb = {version = "*", features = ["tokio-runtime"]}
 chrono = "*"
 colored = {git = "https://github.com/mackwic/colored"}
 log = "0.4.11"
+env_logger = "0.9.0"
 
 
 rand = "*"

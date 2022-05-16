@@ -1,19 +1,23 @@
 #![feature(decl_macro)]
 #![feature(async_closure)]
-use std::{fmt::format,thread,process,time};
+#![feature(backtrace)]
+
+use std::{fmt::format,thread,process,time,env};
 use std::sync::mpsc::{self,Receiver,Sender};
 use std::{io,fs,path,hash};
 
 #[macro_use] extern crate rocket;
 
 use colored::*;
+use env_logger::{Target};
 
 pub mod site;
 
-
 fn main() {
     println!("3x100 Project starting...");
+    let args: Vec<String> = env::args().collect();
 
+    
 
     let weh = site::utils::messageboxtemplate::MessageBox::new("weh".into(),2);
 
@@ -21,9 +25,8 @@ fn main() {
     println!("{:#?}",weh);
     println!("HTML: {}",weh.to_html());
 
-    
 
-    thread::sleep(time::Duration::from_secs(3));
+    thread::sleep(time::Duration::from_secs(1));
     site::launch();    
 }
 

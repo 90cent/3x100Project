@@ -2,11 +2,12 @@ use super::utils::{messageboxtemplate,database};
 use crate::site::Template;
 
 use std::io::Result;
-use std::{thread};
+use std::{thread,time};
 use std::{io,fs};
 
 use rand::{self, Rng};
 use serde_json;
+use tokio::runtime;
 
 #[derive(serde::Serialize)]
 struct TestContext {
@@ -45,9 +46,8 @@ pub fn index() -> Template {
     let titles = vec!["3x100","100³".into(),"100x3","100+100+100","25*12","1+299"];
     let _title = titles[rand::thread_rng().gen_range(0..=titles.len()-1)];
 
-
     let context = TestContext {boxes: html_message_boxes.join().expect("not gud"),title: _title.into()};
-    
+   
     database::action(database::Actions::GetBoxes);
 
     Template::render("index", &context)

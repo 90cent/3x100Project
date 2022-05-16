@@ -63,8 +63,9 @@ use serde_json;
 }
 
 pub mod database {
-    use std::{sync::mpsc,error::Error};
+    use std::{sync::mpsc,error::Error,time,fmt::Display,env};
     use tokio::{runtime,task};
+    use colored::Colorize;
     use mongodb;
 
     pub enum Actions {
@@ -73,40 +74,95 @@ pub mod database {
         InitDatabaseTime
     }
 
+    struct Database {
+        client: mongodb::Client,
+        db: mongodb::Database
+    }
+
+    impl Display for Database {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f,"Database Name: {}",&self.db.name())
+        }
+    }
+
     pub fn action(database_action_code: Actions) {
-        let rt = runtime::Builder::new_multi_thread()
+        let database = init().expect("Error unwraping database");
+        log::info!("{}",database);
+        let db = database.db;
+        
+        
+    }
+
+    fn init() -> Option<Database> {
+        let rt = runtime::Builder::new_current_thread()
             .max_blocking_threads(4)
             .enable_all()
             .on_thread_start(|| {println!("Created Runtime")})
             .thread_name("Runtime #1")
+            .on_thread_park(|| {println!("Runtime Parked")})
+            .on_thread_stop(|| {println!("Runtime Stoped")})
+            .thread_keep_alive(time::Duration::from_secs(10))
+            .worker_threads(3)
             .build().expect("Runtime build failed");
 
         let (tx,rx) = mpsc::channel();
         
-        let databases = rt.spawn_blocking(async move|| {
-            let mut client_options = mongodb::options::ClientOptions::parse("mongodb://192.168.178.135:27017/?directConnection=true&appName=mongosh+1.4.1").await.unwrap();
-            client_options.default_database = Some("project3x100".into());
-            client_options.credential = Some(mongodb::options::Credential::builder()
-                .username("BackendRW")
-                .password("U#9=n&J%n~m=QzRqECw$A*gea*3ar2")
-                .build());
+        let _bruh = rt.block_on(async move {
+            log::info!("Init Database...");
 
-            let c = mongodb::Client::with_options(client_options).expect("Failed");
-        
-            
-            let databases = match c.list_database_names(None, None).await {
-                Ok(k) => k,
+            let mut client_options = mongodb::options::ClientOptions::parse("mongodb://192.168.178.135:27017/").await.unwrap();
+
+            client_options.credential = Some(init_credentials("project3x100".into()));
+
+            let client = mongodb::Client::with_options(client_options);
+            let c = match client {
+                Ok(c) => c,
                 Err(err) => {
-                    vec!["no database".into()]
+                    panic!("DB Client Err: {}",err.to_string())
                 },
             };
+            let db = c.database("project3x100");
 
-            tx.send(databases).unwrap();
+            let database_tulp = (c,db);
+            tx.send(database_tulp).unwrap()
         });
-        println!("{:#?}",rx.recv().unwrap_or(vec!["no database".into()]));
+
+        match rx.recv() {
+            Ok(k) => Some(Database { client: k.0, db: k.1 }),
+            Err(_) => None,
+        }
     }
 
+    fn init_credentials(source: String) -> mongodb::options::Credential {
+        let (username,password) = {
+            match env::var("AUTH3x100") {
+                Ok(k) => {
+                    let split: Vec<_> = k.split(':').collect();
+                    let censored_pw = {
+                        let mut s: String = String::new();
+                        for i in split[1].chars() {
+                            s += "*";
+                        };
+                        s
+                    };
+
+                    log::info!("AUTH:\n ->  USER:{}\n ->  PASSWORD:{}",split[0],censored_pw);
+
+                    (String::from(split[0]),String::from(split[1]))
+                },
+                Err(_) => {
+                    println!("{}","Please define the 3x100AUTH Enviroment".red());
+                    (String::from("ERROR"),String::from("ERROR"))
+                },
+            }
+        };
 
 
-
+        mongodb::options::Credential::builder()
+            .username(username)
+            .password(password)
+            .source(source)
+            .build()
+    }
 }
+
