@@ -1,6 +1,6 @@
 pub mod messageboxtemplate {
 
-use std::{time,thread};
+use std::{time,thread,sync::mpsc};
 use std::hash::{Hash,Hasher};
 use std::collections::hash_map::DefaultHasher;
 
@@ -63,7 +63,7 @@ use serde_json;
 }
 
 pub mod database {
-    use std::error::Error;
+    use std::{sync::mpsc,error::Error};
     use tokio::{runtime,task};
     use mongodb;
 
@@ -74,25 +74,36 @@ pub mod database {
     }
 
     pub fn action(database_action_code: Actions) {
-        let rt = runtime::Builder::new_current_thread()
-            .enable_io()
-            .enable_time()
+        let rt = runtime::Builder::new_multi_thread()
+            .max_blocking_threads(4)
+            .enable_all()
             .on_thread_start(|| {println!("Created Runtime")})
             .thread_name("Runtime #1")
             .build().expect("Runtime build failed");
 
-        rt.spawn_blocking(async move || {
-            let mut client_options = mongodb::options::ClientOptions::parse("mongodb://192.168.178.135:27017").await.unwrap();
-            client_options.app_name = Some("project3x100".into());
-
-            let client = mongodb::Client::with_options(client_options).expect("Failed");
-
-            let c = client;
-                let databases = c.list_database_names(None, None);
-
-                println!("{:#?}",databases.await.unwrap());
-        });
+        let (tx,rx) = mpsc::channel();
         
+        let databases = rt.spawn_blocking(async move|| {
+            let mut client_options = mongodb::options::ClientOptions::parse("mongodb://192.168.178.135:27017/?directConnection=true&appName=mongosh+1.4.1").await.unwrap();
+            client_options.default_database = Some("project3x100".into());
+            client_options.credential = Some(mongodb::options::Credential::builder()
+                .username("BackendRW")
+                .password("U#9=n&J%n~m=QzRqECw$A*gea*3ar2")
+                .build());
+
+            let c = mongodb::Client::with_options(client_options).expect("Failed");
+        
+            
+            let databases = match c.list_database_names(None, None).await {
+                Ok(k) => k,
+                Err(err) => {
+                    vec!["no database".into()]
+                },
+            };
+
+            tx.send(databases).unwrap();
+        });
+        println!("{:#?}",rx.recv().unwrap_or(vec!["no database".into()]));
     }
 
 
